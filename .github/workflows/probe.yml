@@ -1,0 +1,20 @@
+name: Probe Comment
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened]
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: echo body
+        run: |
+          echo "event=${{ github.event_name }}"
+          echo "assoc=${{ github.event.comment.author_association || github.event.issue.author_association }}"
+          echo "body_len=${#BODY}"
+        env:
+          BODY: ${{ github.event.comment.body }}
